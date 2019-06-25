@@ -8,7 +8,7 @@ class Server():
         self.main_connection = ''
         self.server_port = server_port
         self.host = ''
-        self.server_started = True
+        #self.server_started = True
         self.client_connected = []
         self.command_received = ''
         self.connection_to_client = []
@@ -24,17 +24,20 @@ class Server():
 
     #Accept client request for connection
     def accept_connection(self):
+        server_started = True #
         """Method use to check and accept client request for connection"""
-        while self.server_started:
+        while server_started:
             asked_connection, wlist, xlist = select.select([self.main_connection], [], [], 0.05)
             if asked_connection: #If a connection is accepted
                 for connection in asked_connection:
                     self.connection_to_client, self.connection_info = connection.accept()
                     self.client_connected.append(self.connection_to_client) #All clients are are stored in client_connected 'list'
                     self.connection_infos.append(self.connection_info) #All info are stored in connection_info 'list'
+
                 #If a new client is connected, print it's connection information
                 if self.connection_info:
                     print(self.connection_info)
+
     
     #End server
     def end_server(self):
