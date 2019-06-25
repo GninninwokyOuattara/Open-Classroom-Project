@@ -1,0 +1,6 @@
+*.txt
+*.pyc
+classes/__pycache__/*
+classes/__init__.py
+.gitignore
+.DS_Store

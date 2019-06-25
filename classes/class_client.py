@@ -28,7 +28,7 @@ class Client():
         """Method use to connect to a server, given the right port"""
         self.connection_to_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection_to_server.connect((self.host, int(self.server_port)))
-        print("Connected to port : {}".format(self.server_port))
-        return self.connection_to_server
+        print("Connection établie avec le server. Port : {}".format(self.server_port))
+        
 
     

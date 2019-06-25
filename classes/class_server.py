@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Class server"""
+
+import os
 import socket
 import select
 from threading import Thread
@@ -15,6 +17,7 @@ class Server():
         self.connection_to_client = []
         self.connection_info = ''
         self.connection_infos = []
+        self.player_number = 0
 
     #Start a server
     def launch_server(self):
@@ -33,7 +36,10 @@ class Server():
                 for connection in asked_connection:
                     self.connection_to_client, self.connection_info = connection.accept()
                     #welcome_message(self.connection_to_client)
-                    self.connection_to_client.send(b"Welcome")
+                    self.player_number += 1
+                    message = "Bienvenue Joueur {}".format(self.player_number)
+                    self.connection_to_client.send(message.encode())
+
                     self.client_connected.append(self.connection_to_client) #All clients are are stored in client_connected 'list'
                     self.connection_infos.append(self.connection_info) #All info are stored in connection_info 'list'
 
@@ -69,14 +75,39 @@ class Server():
 
             client.close()
 
-
-#x = Server(12800)
-#x.launch_server()
-#x.accept_connection()
-
-#while x.server_started:
-#    x.client_message()
-
-#x.end_server()
-
+"""
+class Map():
+    def __init__(self, map_name):
+        self.map_name = map_name
+        self.map_link = "cartes/"+map_name+".txt"
+        self.maze = []
     
+    def create_maze_from_map(self, map):
+        with open("cartes/"+map+".txt", "r") as f:
+            number = 1
+            for lines in f:
+                self.maze[number] = lines
+                number +=1
+"""
+
+class Map():
+    def __init__(self, map_folder):
+        self.map_folder = map_folder #Where our map are
+        self.map_found = {}
+
+
+    def find_map_in_file(self): 
+        for file_name in os.listdir(self.map_folder):
+            if file_name.endswith(".txt"):
+                link = os.path.join(self.map_folder, file_name)
+                self.map_found[file_name[:-4]] = link
+
+    def map_available(self):
+        number = 1
+        for value in self.map_found.values():
+            print("{} : {}".format(number, value))
+            number += 1
+
+class Maze():
+    pass
+
