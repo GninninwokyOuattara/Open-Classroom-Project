@@ -104,8 +104,8 @@ class Map():
 
     def map_available(self):
         number = 1
-        for value in self.map_found.values():
-            print("{} : {}".format(number, value))
+        for key in self.map_found.keys():
+            print(" {} - {}".format(number, key))
             number += 1
 
 class Maze():
