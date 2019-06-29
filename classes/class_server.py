@@ -7,9 +7,10 @@ import select
 from threading import Thread
 
 class Server():
-    def __init__(self, server_port):
+    def __init__(self):
         self.main_connection = ''
-        self.server_port = int(server_port)
+        #self.server_port = int(server_port)
+        self.server_port = 12800
         self.host = ''
         self.server_started = True
         self.client_connected = []
@@ -47,6 +48,8 @@ class Server():
                 if self.connection_info:
                     print(self.connection_info)
                     #server_started = False
+            if self.player_number == 2:
+                break
 
     def client_message(self):
         for client in self.client_connected:
@@ -75,20 +78,6 @@ class Server():
 
             client.close()
 
-"""
-class Map():
-    def __init__(self, map_name):
-        self.map_name = map_name
-        self.map_link = "cartes/"+map_name+".txt"
-        self.maze = []
-    
-    def create_maze_from_map(self, map):
-        with open("cartes/"+map+".txt", "r") as f:
-            number = 1
-            for lines in f:
-                self.maze[number] = lines
-                number +=1
-"""
 
 class Map():
     def __init__(self, map_folder):
@@ -97,17 +86,31 @@ class Map():
 
 
     def find_map_in_file(self): 
+        number = 1
         for file_name in os.listdir(self.map_folder):
             if file_name.endswith(".txt"):
                 link = os.path.join(self.map_folder, file_name)
-                self.map_found[file_name[:-4]] = link
+                #self.map_found[file_name[:-4]] = link
+                self.map_found[number] = (file_name[:-4], link)
+                number+=1
+        return self.map_found
+
 
     def map_available(self):
-        number = 1
-        for key in self.map_found.keys():
-            print(" {} - {}".format(number, key))
-            number += 1
+        for key, value in self.map_found.items():
+            print("{} - {}".format(key, value[0]))
 
 class Maze():
-    pass
+    def __init__(self, game_map):
+        self.game_map = game_map
+        self.game_maze = {}
+
+
+    def create_maze_from_map(self):
+        with open(self.game_map[1], "r") as map:
+            number = 1
+            for lines in map:
+                self.game_maze[number] = lines
+                number += 1
+
 
