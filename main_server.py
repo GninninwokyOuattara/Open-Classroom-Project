@@ -45,5 +45,8 @@ game_maze.show_maze()
 print("l")
 
 game_server.end_server()
+game_maze.game_maze[19] == ''
+
+game_maze.game_maze[20] == ''
 
 #A present il faut envoyer les cartes au deux joueurs connecter

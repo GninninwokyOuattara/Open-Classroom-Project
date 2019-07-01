@@ -48,7 +48,7 @@ class Server():
                 if self.connection_info:
                     print(self.connection_info)
                     #server_started = False
-            if self.player_number == 2:
+            if self.player_number == 1: #Max player allowed
                 break
 
     def client_message(self):
@@ -110,7 +110,7 @@ class Maze():
         with open(self.game_map[1], "r") as _map:
             number = 1
             for lines in _map:
-                if not lines ==  "\n":
+                if not lines ==  "\n" or lines == '':
                     self.game_maze[number] = lines.rstrip()
                     number += 1
 
@@ -118,6 +118,7 @@ class Maze():
     def show_maze(self):
 
         for value in self.game_maze.values():
-            print(value)
+            if not value == '':
+                print(value)
     
 
