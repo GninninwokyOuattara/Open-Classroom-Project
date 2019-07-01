@@ -107,10 +107,17 @@ class Maze():
 
 
     def create_maze_from_map(self):
-        with open(self.game_map[1], "r") as map:
+        with open(self.game_map[1], "r") as _map:
             number = 1
-            for lines in map:
-                self.game_maze[number] = lines
-                number += 1
+            for lines in _map:
+                if not lines ==  "\n":
+                    self.game_maze[number] = lines.rstrip()
+                    number += 1
 
+
+    def show_maze(self):
+
+        for value in self.game_maze.values():
+            print(value)
+    
 

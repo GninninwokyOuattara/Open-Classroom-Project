@@ -41,3 +41,9 @@ game_server = Server()
 game_server.launch_server()
 game_server.accept_connection()
 print("Partie commence ")
+game_maze.show_maze()
+print("l")
+
+game_server.end_server()
+
+#A present il faut envoyer les cartes au deux joueurs connecter

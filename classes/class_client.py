@@ -2,6 +2,7 @@
 """Client class"""
 import socket
 import re
+from classes.class_server import Server
 
 class Client():
     def __init__(self):
@@ -37,4 +38,7 @@ class Client():
         except:
             print("Connexion avec le server a echouée")
 
-    
+"""
+class Player(Server):
+    pass
+"""    

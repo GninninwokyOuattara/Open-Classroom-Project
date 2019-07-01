@@ -11,7 +11,7 @@ connect = False
 while not connect:
     connect = player.connection()
     if not connect:
-        reconnect = input("Rééssayer ? (o/n) : ")
+        reconnect = input("Réessayer ? (o/n) : ")
         if reconnect.lower() == "o":
             continue
         else:
