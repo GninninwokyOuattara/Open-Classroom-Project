@@ -4,7 +4,9 @@
 import os
 import socket
 import select
-from threading import Thread
+from threading
+
+                #SERVER
 
 class Server():
     def __init__(self):
@@ -67,6 +69,15 @@ class Server():
         message = "Welcome"
         message = message.encode()
         client.send(message)
+    
+    def send(self, client_connected = [], labyrinthe = {}):
+        """Method to send things to client(s)"""
+        
+        for client in client_connected:
+            for values in labyrinthe.values():
+                maze_line = values.encode()
+                client.connected.send(maze_line)
+
 
 
     
@@ -77,6 +88,8 @@ class Server():
         for client in self.client_connected:
 
             client.close()
+
+                    #MAP
 
 
 class Map():
@@ -99,6 +112,9 @@ class Map():
     def map_available(self):
         for key, value in self.map_found.items():
             print("{} - {}".format(key, value[0]))
+
+
+                        #MAZE   
 
 class Maze():
     def __init__(self, game_map):
