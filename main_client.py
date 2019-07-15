@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from classes.class_client import Client
 import sys
+import threading
 
 player = Client()
 #player.client_base_setup()
@@ -19,9 +20,16 @@ while not connect:
 
 message = player.connection_to_server.recv(1024)
 print(message.decode())
+
+#thread_receive = threading.Thread(target = player.receive, args = ())
+
+player.receive_encoded_maze() #Receive maze from server
+
 while True:
     message = input("> ")
     #if message.lower() != "fin":
     player.connection_to_server.send(message.encode())
-    message = player.connection_to_server.recv(1024)
-    print(message.decode())
+    #message = player.connection_to_server.recv(1024)
+    #print(message.decode())
+
+

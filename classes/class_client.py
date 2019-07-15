@@ -2,7 +2,8 @@
 """Client class"""
 import socket
 import re
-from classes.class_server import Server
+#from classes.class_server import Server
+import json
 
 class Client():
     def __init__(self):
@@ -38,7 +39,31 @@ class Client():
         except:
             print("Connexion avec le server a echouée")
 
-"""
-class Player(Server):
-    pass
-"""    
+    def send(self):
+        """Send message to server if message != '' """
+        message = ''
+        while True:
+            message = input("> ")
+            if len(message) != 0:
+                message = message.encode
+                self.connection_to_server.send(message)
+
+    def receive(self):
+        """Receive and print messages from server"""
+        while True:
+            message = self.connection_to_server.recv(1024)
+            if len(message) != 0:
+                message = message.decode()
+                print(message)
+            else:
+                print("On break")
+                break
+
+    def receive_encoded_maze(self):
+        encoded_maze = self.connection_to_server.recv(4096) #Receive the bytes type dictionnary
+        encoded_maze = encoded_maze.decode() #decode it, bytes to str
+        decoded_maze = json.loads(encoded_maze) #reconvert it from str to dict
+        #print the dictionnary
+        for value in decoded_maze.values(): 
+            print(value) 
+

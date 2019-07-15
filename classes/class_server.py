@@ -4,12 +4,14 @@
 import os
 import socket
 import select
-from threading
+import threading
+import json
 
                 #SERVER
 
-class Server():
+class Server(threading.Thread):
     def __init__(self):
+        super().__init__()
         self.main_connection = ''
         #self.server_port = int(server_port)
         self.server_port = 12800
@@ -21,6 +23,7 @@ class Server():
         self.connection_info = ''
         self.connection_infos = []
         self.player_number = 0
+        self.thread_dict = {}
 
     #Start a server
     def launch_server(self):
@@ -43,6 +46,10 @@ class Server():
                     message = "Bienvenue Joueur {}".format(self.player_number)
                     self.connection_to_client.send(message.encode())
 
+                    #On creer un thread personnel pour le client connecté
+                    self.thread_dict['thread_r_'+'{}'.format(self.player_number)] =\
+                         threading.Thread(target = self.receive, args = (self.connection_to_client,) )
+
                     self.client_connected.append(self.connection_to_client) #All clients are are stored in client_connected 'list'
                     self.connection_infos.append(self.connection_info) #All info are stored in connection_info 'list'
 
@@ -50,7 +57,7 @@ class Server():
                 if self.connection_info:
                     print(self.connection_info)
                     #server_started = False
-            if self.player_number == 1: #Max player allowed
+            if self.player_number == 2: #Max player allowed
                 break
 
     def client_message(self):
@@ -77,6 +84,18 @@ class Server():
             for values in labyrinthe.values():
                 maze_line = values.encode()
                 client.connected.send(maze_line)
+
+
+    #ON HOLD
+    def receive(self, connection_to_client):
+        reception = True
+        while reception:
+            message = connection_to_client.recv(1024)
+            message = message.decode()
+            if message.lower() == "fin":
+                reception == False
+            else:
+                print(message)
 
 
 
@@ -136,5 +155,29 @@ class Maze():
         for value in self.game_maze.values():
             if not value == '':
                 print(value)
+
+    def send_maze_to_players(self, game_server):
+        #game_server = object, pour avoir accès a toutes les variables de l'objet
+        for player in game_server.client_connected:
+            number = 1
+            for i in range(len(self.game_maze)):
+                game_server.connection_to_client.send(self.game_maze[number].encode())
+                number+=1
+            """    
+            for value in self.game_maze.values():
+                value = value.encode()
+                game_server.connection_to_client.send(value)
+            """   
+
+    def send_dict_maze(self, game_server):
+        """Method uses to send maze to connectd client"""
+        encoded_maze = json.dumps(self.game_maze) #Convert the dict to str with json
+        encoded_maze = encoded_maze.encode() #Encode the str to bytes
+        for player in game_server.client_connected:
+            player.send(encoded_maze)
+
+             
+
+
     
 
