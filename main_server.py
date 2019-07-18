@@ -43,11 +43,25 @@ game_server.accept_connection()
 print("Partie commence ")
 game_maze.show_maze()
 
+
+
+
 #On met l'execution du thread en pause le temps d'un test
 #game_server.thread_dict['thread_r_1'].start()
 
 #A present il faut envoyer les cartes au deux joueurs connectés
 game_maze.send_dict_maze(game_server)
+
+#On attend le signal du joueur 2
+verif = game_server.connection_to_client.recv(1024)
+#On envoie 'La partie commence !' a nos client connecté apres reception du signal
+if verif:
+    message = "La partie commence !"
+    for client in game_server.client_connected:
+        client.send(message.encode())
+        
+
+
 #game_maze.send_maze_to_players(game_server)
 #Utiliser le threading pour les clients afin de pouvoir envoyer et recevoir
 #Les messages en meme temps

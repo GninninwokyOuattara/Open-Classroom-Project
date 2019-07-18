@@ -11,6 +11,7 @@ class Client():
         self.host = 'localhost'
         self.regex_port = r"128[0-9]{2}"
         self.connection_to_server = ''
+        self.player_own_number = '' #Player by order of arrival, first get 1 and so on
 
 #    def get_regex_port():
 #        return r"^128[0-9]{2}" #Between 12800 and 12899
@@ -56,7 +57,7 @@ class Client():
                 message = message.decode()
                 print(message)
             else:
-                print("On break")
+                #print("On break")
                 break
 
     def receive_encoded_maze(self):
