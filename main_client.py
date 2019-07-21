@@ -49,7 +49,23 @@ else:
     #message = player.connection_to_server.recv(1024)
     player.receive()
 
+#Regex tour des joueurs
+turn = re.compile(r"[1-2]")
 
+#Les clients/Players doivent attendre leur tour pour lancer une action
+while True:
+    try:
+        #Le serveur indique a qui est le tour
+        #player_turn doit etre un entier entre 1 et 2
+        player_turn = int(player.receive())
+        if turn.search(player_turn): 
+            #Traitement
+            pass
+        else:
+            continue
+    except:
+        print("Erreur")
+        continue
 
 while True:
     message = input("> ")

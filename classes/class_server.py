@@ -6,6 +6,7 @@ import socket
 import select
 import threading
 import json
+import random
 
                 #SERVER
 
@@ -102,7 +103,7 @@ class Server(threading.Thread):
     
     #End server
     def end_server(self):
-        """Method use to close server and all client connected"""
+        """Method use to close server and connection w/ all client connected"""
         self.main_connection.close()
         for client in self.client_connected:
 
@@ -139,6 +140,14 @@ class Maze():
     def __init__(self, game_map):
         self.game_map = game_map
         self.game_maze = {}
+        self.game_maze_dimension = ()
+        self.wall = "O"
+        self.portal = "."
+        self.player_robot_list = ['1', '2']
+        self.position_player1 = ['1',()]
+        self.position_player2 = ['2', ()]
+
+ 
 
 
     def create_maze_from_map(self):
@@ -170,11 +179,70 @@ class Maze():
             """   
 
     def send_dict_maze(self, game_server):
-        """Method uses to send maze to connectd client"""
+        """Method used to send maze to connectd client"""
         encoded_maze = json.dumps(self.game_maze) #Convert the dict to str with json
         encoded_maze = encoded_maze.encode() #Encode the str to bytes
         for player in game_server.client_connected:
             player.send(encoded_maze)
+
+    def maze_dimension(self):
+        """Method used to get a proper dimension of the maze
+        in the tuple form (line, column)"""
+        x = len(self.game_maze.keys()) #Max lines number
+        y = len(self.game_maze[1]) #Max columns number
+        self.game_maze_dimension = (x, y)
+
+
+
+    def assign_random_position_to_player(self, player):
+        """Method used to assign a random position to the player
+        - player parameter = player_robot_list[0] or [1]"""
+        self.maze_dimension()
+
+        #We generate a list of x lines and y columns in the maze scope
+        #x_list = [x for x in range (self.game_maze_dimension[0] + 1) if x != 0]
+        #y_list = [y for y in range (self.game_maze_dimension[1] + 1) if y != 0]
+        x_list = []
+        y_list = []
+        for x in range(self.game_maze_dimension[0]):
+            #if not x == 0:
+            x_list.append(x + 1)
+        for y in range(self.game_maze_dimension[1]):
+            #if not y == 0:
+            y_list.append(y)
+
+        #We loop until we find a good spot
+        while True:
+            #We generate a random coordinate (x,y) in the scope the maze
+            x = random.choice(x_list)
+            y = random.choice(y_list)
+            coordinate = (random.choice(x_list), random.choice(y_list))
+
+            #We verify that this generated coordinate isn't a wall, a portal, an exit
+            #or litteraly another player
+            #Wall = O, Portal = ., Exit = U
+            print(self.game_maze[coordinate[0]][coordinate[1]])
+            if self.game_maze[coordinate[0]][coordinate[1]] == 'O'\
+            or self.game_maze[coordinate[0]][coordinate[1]] == 'U'\
+            or self.game_maze[coordinate[0]][coordinate[1]] == '.'\
+            or self.game_maze[coordinate[0]][coordinate[1]] not in self.player_robot_list:
+                #We disregard that posiiton
+                continue
+            else:
+                self.player[1][1] = coordinate 
+                #We assign this position to player
+                #player = (coordinate[0], coordinate[1])
+                #We generate a list of all element in the line associated with the x coordinate
+                liste = []
+                for element in self.game_maze[coordinate[0]]:
+                    liste.append(element)
+                #Set the player robot in the right place
+                liste[coordinate[1] + 1] = player[1]
+                #Convert the list of element into a string and update in the maze
+                liste = "".join(liste)
+                self.game_maze[coordinate[0]] = liste
+                break
+
 
              
 

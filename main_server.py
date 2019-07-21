@@ -40,7 +40,13 @@ print("On attend les client")
 game_server = Server()
 game_server.launch_server()
 game_server.accept_connection()
+
+#Il faut assigner une position aléatoire a chaque client dans le labyrinthe.
+game_maze.assign_random_position_to_player(game_maze.position_player1)
+game_maze.assign_random_position_to_player(game_maze.position_player2)
+
 print("Partie commence ")
+
 game_maze.show_maze()
 
 
