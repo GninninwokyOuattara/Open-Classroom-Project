@@ -59,6 +59,28 @@ if verif:
     message = "La partie commence !"
     for client in game_server.client_connected:
         client.send(message.encode())
+
+#Le serveur doit à présent indiquer aux players a qui est le tour
+#Tout en manageant les commandes que ses clients entreront
+partie = True
+turn = 1
+while partie:
+    #On envoie le numéro du player qui peut entrer une commande
+    for client in game_server.client_connected:
+        #Si le tour est au p1, on lui indique qu'il peut emmettre une action
+        #On incrémente 'turn' de 1 pour que le tour prochain soit au p2
+        if turn == 1:
+            client.send(turn.encode())
+            turn += 1
+        #Si le tour est au p2, on lui indique qu'il peut emmettre une action
+        #On décrémente 'turn' de 1 pour que le tour prochain soit au p1
+        elif turn == 2:
+            client.send(turn.encode())
+            turn -= 1
+    #On attend a présent la commande du player à qui c'est tour
+    commande = game_server.connection_to_client.recv(1024)
+    
+        
         
 
 
