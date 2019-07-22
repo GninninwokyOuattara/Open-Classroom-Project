@@ -191,13 +191,17 @@ class Maze():
         x = len(self.game_maze.keys()) #Max lines number
         y = len(self.game_maze[1]) #Max columns number
         self.game_maze_dimension = (x, y)
+    
+    def maze_dim(self):
+        return (len(self.game_maze.keys()), len(self.game_maze[1]))
 
 
 
     def assign_random_position_to_player(self, player):
         """Method used to assign a random position to the player
         - player parameter = player_robot_list[0] or [1]"""
-        self.maze_dimension()
+        #self.maze_dimension()
+        self.game_maze_dimension = self.maze_dim()
 
         #We generate a list of x lines and y columns in the maze scope
         #x_list = [x for x in range (self.game_maze_dimension[0] + 1) if x != 0]
@@ -214,9 +218,10 @@ class Maze():
         #We loop until we find a good spot
         while True:
             #We generate a random coordinate (x,y) in the scope the maze
-            x = random.choice(x_list)
-            y = random.choice(y_list)
+            #x = random.choice(x_list)
+            #y = random.choice(y_list)
             coordinate = (random.choice(x_list), random.choice(y_list))
+            print(coordinate)
 
             #We verify that this generated coordinate isn't a wall, a portal, an exit
             #or litteraly another player
@@ -227,9 +232,10 @@ class Maze():
             or self.game_maze[coordinate[0]][coordinate[1]] == '.'\
             or self.game_maze[coordinate[0]][coordinate[1]] not in self.player_robot_list:
                 #We disregard that posiiton
+                print("L")
                 continue
             else:
-                self.player[1][1] = coordinate 
+                player[1] = coordinate 
                 #We assign this position to player
                 #player = (coordinate[0], coordinate[1])
                 #We generate a list of all element in the line associated with the x coordinate
@@ -237,7 +243,7 @@ class Maze():
                 for element in self.game_maze[coordinate[0]]:
                     liste.append(element)
                 #Set the player robot in the right place
-                liste[coordinate[1] + 1] = player[1]
+                liste[coordinate[1] - 1] = player[0]
                 #Convert the list of element into a string and update in the maze
                 liste = "".join(liste)
                 self.game_maze[coordinate[0]] = liste
