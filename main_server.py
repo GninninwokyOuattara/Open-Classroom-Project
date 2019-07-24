@@ -5,6 +5,7 @@
 
 import os
 from classes.class_server import *
+from functions import encoded_then_sent
 
 #1st part -- Showing exinsting map in server terminal
 map_folder = Map("maps")
@@ -76,12 +77,14 @@ while partie:
         #Si le tour est au p1, on lui indique qu'il peut emmettre une action
         #On incrémente 'turn' de 1 pour que le tour prochain soit au p2
         if turn == 1:
-            client.send(turn.encode())
+            encoded_then_sent(client, turn, str)
+            #client.send(turn.encode())
             turn += 1
         #Si le tour est au p2, on lui indique qu'il peut emmettre une action
         #On décrémente 'turn' de 1 pour que le tour prochain soit au p1
         elif turn == 2:
-            client.send(turn.encode())
+            encoded_then_sent(client, turn, str)
+            #client.send(turn.encode())
             turn -= 1
     #On attend a présent la commande du player à qui c'est tour
     commande = game_server.connection_to_client.recv(1024)

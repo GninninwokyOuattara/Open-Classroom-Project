@@ -64,7 +64,7 @@ while True:
         else:
             continue
     except:
-        print("Erreur")
+        #print("Erreur")
         continue
 
 while True:
