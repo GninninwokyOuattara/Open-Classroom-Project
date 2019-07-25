@@ -23,8 +23,11 @@ while not connect:
 
             
 
-#Recoit le labyrinthe
+#On receptionne le message de bienvenue
 message = player.connection_to_server.recv(1024)
+#On recupere le numero du joueur.
+player.player_own_number = int(message.decode()[-1]) 
+print(message.decode())
 
 #Recoit les infos des connections
 data = player.connection_to_server.recv(1024)
@@ -38,11 +41,9 @@ if data:
             #On supprime cette donnée
             data.remove(own)
 
-#On recupere le numero du joueur.
-message = player.connection_to_server.recv(1024)
-player.player_own_number = int(message.decode()[-1]) 
+print(data)
 
-print(message.decode())
+
 
 #thread_receive = threading.Thread(target = player.receive, args = ())
 
