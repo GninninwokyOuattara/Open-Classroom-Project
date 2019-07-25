@@ -3,6 +3,7 @@ from classes.class_client import Client
 import sys
 import threading
 import re
+import json
 
 player = Client()
 #player.client_base_setup()
@@ -19,9 +20,26 @@ while not connect:
         else:
             sys.exit()
 
+
+            
+
+#Recoit le labyrinthe
 message = player.connection_to_server.recv(1024)
 
+#Recoit les infos des connections
+data = player.connection_to_server.recv(1024)
+if data:
+    data = data.decode()
+    data = json.loads(data)
+    #Data contient toutes les données, celle du joueur incluse
+    own = player.connection_to_server.getsockname()
+    for element in data:
+        if element == own:
+            #On supprime cette donnée
+            data.remove(own)
+
 #On recupere le numero du joueur.
+message = player.connection_to_server.recv(1024)
 player.player_own_number = int(message.decode()[-1]) 
 
 print(message.decode())

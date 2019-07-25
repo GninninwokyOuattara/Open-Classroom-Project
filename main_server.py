@@ -5,7 +5,8 @@
 
 import os
 from classes.class_server import *
-from functions import encoded_then_sent
+from functions.server_functions import encoded_then_sent
+import json
 
 #1st part -- Showing exinsting map in server terminal
 map_folder = Map("maps")
@@ -41,6 +42,11 @@ print("On attend les client")
 game_server = Server()
 game_server.launch_server()
 game_server.accept_connection()
+
+#Send player connection infos to other player
+all_connection_infos = json.dumps(game_server.connection_infos)
+all_connection_infos = all_connection_infos.encode()
+game_server.connection_to_client.sendall(all_connection_infos)
 
 #Il faut assigner une position aléatoire a chaque client dans le labyrinthe.
 game_maze.assign_random_position_to_player(game_maze.position_player1)
