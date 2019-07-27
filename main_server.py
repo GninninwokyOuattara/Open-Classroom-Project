@@ -46,7 +46,9 @@ game_server.accept_connection()
 #Send player connection infos to other player
 all_connection_infos = json.dumps(game_server.connection_infos)
 all_connection_infos = all_connection_infos.encode()
-game_server.connection_to_client.sendall(all_connection_infos)
+#game_server.connection_to_client.sendall(all_connection_infos)
+for client in game_server.client_connected:
+    client.send(all_connection_infos)
 
 #Il faut assigner une position aléatoire a chaque client dans le labyrinthe.
 game_maze.assign_random_position_to_player(game_maze.position_player1)

@@ -55,7 +55,7 @@ if not player.player_own_number == 2:
     #message = player.connection_to_server.recv(1024)
     player.receive()
 else:
-    commande_start_partie = re.compile(r"[C]")
+    commande_start_partie = re.compile(r"^C$")
     while True:   
         commande = str(input("Entrer C pour commencer à jouer : \n"))
         if not commande_start_partie.search(commande):
