@@ -43,19 +43,22 @@ if data:
 
 print(data)
 
-
+#REGEX
+commande_start_partie = re.compile(r"^C$")
+#Regex tour des joueurs
+turn = re.compile(r"[1-2]")
 
 #thread_receive = threading.Thread(target = player.receive, args = ())
 
 player.receive_encoded_maze() #Receive maze from server
 
 #Les utilisateurs doivent attendre que le joueur 2, demarre la partie 
-#en appuyant sur C
+#Joueur 2 demarre la partie en entrant C
 if not player.player_own_number == 2:
     #message = player.connection_to_server.recv(1024)
     player.receive()
 else:
-    commande_start_partie = re.compile(r"^C$")
+    
     while True:   
         commande = str(input("Entrer C pour commencer à jouer : \n"))
         if not commande_start_partie.search(commande):
@@ -68,8 +71,7 @@ else:
     #message = player.connection_to_server.recv(1024)
     player.receive()
 
-#Regex tour des joueurs
-turn = re.compile(r"[1-2]")
+
 
 #Les clients/Players doivent attendre leur tour pour lancer une action
 while True:

@@ -149,7 +149,12 @@ class Maze():
         self.position_player2 = ['2', ()]
 
  
-
+    def update_position(self, player):
+        """Method that can be run anytime to automaticaly 
+        catch player (given as parameter) position in the maze"""
+        for key, value in self.game_maze.items():
+            if player[0] in self.game_maze.key():
+                player[1] = (key, self.game_maze[key].index(player[0]))
 
     def create_maze_from_map(self):
         with open(self.game_map[1], "r") as _map:
@@ -257,10 +262,4 @@ class Maze():
                 liste = "".join(liste)
                 self.game_maze[coordinate[0]] = liste
                 break
-
-
-             
-
-
-    
 
