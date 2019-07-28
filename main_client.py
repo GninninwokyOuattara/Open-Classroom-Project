@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from classes.class_client import Client
+from classes.class_commande import Commande
 import sys
 import threading
 import re
@@ -43,6 +44,9 @@ if data:
 
 print(data)
 
+#Commande class
+commande = Commande()
+
 #Regex commande pour demarrer partie
 commande_start_partie = re.compile(r"^C$")
 #Regex tour des joueurs
@@ -72,16 +76,17 @@ else:
     player.receive()
 
 
-
 #Les clients/Players doivent attendre leur tour pour lancer une action
 while True:
+    player_turn = int(player.receive())
     try:
         #Le serveur indique a qui est le tour
-        #player_turn doit etre un entier entre 1 et 2
-        player_turn = int(player.receive())
-        if turn.search(player_turn): 
+        #player_turn doit etre un entier entre 1 et 2       
+        if player.player_own_number == player_turn:
+            action = input("Votre tour \n")
+            
             #Traitement
-            pass
+            
         else:
             continue
     except:

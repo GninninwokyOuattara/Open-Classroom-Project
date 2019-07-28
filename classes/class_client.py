@@ -55,7 +55,7 @@ class Client():
             message = self.connection_to_server.recv(1024)
             if len(message) != 0:
                 message = message.decode()
-                print(message)
+                #print(message)
             else:
                 #print("On break")
                 break

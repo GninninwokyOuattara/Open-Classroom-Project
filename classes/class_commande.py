@@ -6,6 +6,38 @@ import re
 
 
 class Commande():
+    """Class permettant de gerer toutes les commandes possible
+    - Executable par le client
+    - Traitable par le serveur
+    """
+    def __init__(self):
+        self.moove = ['N', 'S', 'O', 'E'] #Direction possible
+        self.action = ['M', 'P'] #Action possible
+        self.re_moove = r"^[NSOE]{1}([0-9]{1})?$"
+        self.re_action = r"^[PM]{1}[NSOE]{1}$"
+        self.c_partie = r"^[cC]{1}$"
+    
+    def compile_regex(self):
+        """
+        Compile tout les regex 
+        """
+        self.re_moove = re.compile(self.re_moove)
+        self.re_action = re.compile(self.action)
 
-
-    ddddd
+    def command_check(self, commande):
+        """Verifie si la commande est valide, si valide, elle l'a traite
+        - Retourne 2 elements : first_part, second_part
+        du fait du format des commandes, second_part peut etre None
+        """
+        if re.search(self.action, commande):
+            if not len(commande) == 2:
+                first_part = commande[0]
+                second_part = None
+            else:
+                first_part = commande[0]
+                second_part = commande[1]
+            return first_part, second_part
+        elif re.search(self.moove, commande):
+            first_part = commande[0]
+            second_part = commande[0]
+        return first_part, second_part
