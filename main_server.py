@@ -65,7 +65,7 @@ game_maze.show_maze()
 #game_server.thread_dict['thread_r_1'].start()
 
 #A present il faut envoyer les cartes au deux joueurs connectés
-game_maze.send_dict_maze(game_server)
+game_maze.send_dict_re(game_server)
 
 #On attend le signal du joueur 2
 verif = game_server.connection_to_client.recv(1024)
@@ -74,6 +74,12 @@ if verif:
     message = "La partie commence !"
     for client in game_server.client_connected:
         client.send(message.encode())
+
+#############################################################
+# METTRE DES INSTRUCTIONS ICI POUR LES COMMANDES POSSIBLES
+# POUR TCHATER ENTRE JOUEUR PAR EXEMPLE
+##############################################################
+
 
 #Le serveur doit à présent indiquer aux players a qui est le tour
 #Tout en manageant les commandes que ses clients entreront
@@ -94,8 +100,8 @@ while partie:
             encoded_then_sent(client, turn, str)
             #client.send(turn.encode())
             turn -= 1
-    #On attend a présent la commande du player à qui c'est tour
-    commande = game_server.connection_to_client.recv(1024)
+        #On attend a présent la commande du player à qui c'est tour
+        commande = game_server.connection_to_client.recv(1024)
     
         
         

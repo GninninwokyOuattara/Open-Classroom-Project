@@ -43,7 +43,7 @@ if data:
 
 print(data)
 
-#REGEX
+#Regex commande pour demarrer partie
 commande_start_partie = re.compile(r"^C$")
 #Regex tour des joueurs
 turn = re.compile(r"[1-2]")
