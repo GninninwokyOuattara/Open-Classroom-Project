@@ -55,10 +55,12 @@ class Client():
             message = self.connection_to_server.recv(1024)
             if len(message) != 0:
                 message = message.decode()
-                #print(message)
+                print(message)
+                break
             else:
                 #print("On break")
                 break
+        return message
 
     def receive_encoded_maze(self):
         encoded_maze = self.connection_to_server.recv(4096) #Receive the bytes type dictionnary

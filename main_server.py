@@ -7,6 +7,7 @@ import os
 from classes.class_server import *
 from functions.server_functions import encoded_then_sent
 import json
+import time
 
 #1st part -- Showing exinsting map in server terminal
 map_folder = Map("maps")
@@ -72,19 +73,20 @@ verif = game_server.connection_to_client.recv(1024)
 #On envoie 'La partie commence !' a nos client connecté apres reception du signal
 if verif:
     message = "La partie commence !"
+    """
     for client in game_server.client_connected:
         client.send(message.encode())
+    """
+    game_server.client_connected[0].send(message.encode())
+    game_server.client_connected[1].send(message.encode())
 
-#############################################################
-# METTRE DES INSTRUCTIONS ICI POUR LES COMMANDES POSSIBLES
-# POUR TCHATER ENTRE JOUEUR PAR EXEMPLE
-##############################################################
-
-
+time.sleep(5)
 #Le serveur doit à présent indiquer aux players a qui est le tour
 #Tout en manageant les commandes que ses clients entreront
 partie = True
 turn = 1
+
+"""
 while partie:
     #On envoie le numéro du player qui peut entrer une commande
     for client in game_server.client_connected:
@@ -102,7 +104,25 @@ while partie:
             turn -= 1
         #On attend a présent la commande du player à qui c'est tour
         commande = game_server.connection_to_client.recv(1024)
-    
+"""
+while True:
+    if turn ==1:
+        #Tour au premier joueur donc
+        encoded_then_sent(game_server.client_connected[0], turn, str)
+        turn = 2
+        commande = game_server.client_connected[0].recv(1024)
+        game_server.client_connected[0].send(b"Commande recu")
+        #Methode qui va traiter la commande
+    elif turn == 2:
+        #Tour au second joueur donc
+        encoded_then_sent(game_server.client_connected[1], turn, str)
+        commande = game_server.client_connected[1].recv(1024)
+        turn = 1
+        game_server.client_connected[1].send(b"Commande recu")
+
+        #Method qui va traiter la commande
+    #On attend la reponse (commande)
+
         
         
 

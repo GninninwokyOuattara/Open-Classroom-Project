@@ -60,38 +60,48 @@ player.receive_encoded_maze() #Receive maze from server
 #Joueur 2 demarre la partie en entrant C
 if not player.player_own_number == 2:
     #message = player.connection_to_server.recv(1024)
-    player.receive()
+    #player.receive()
+    message = player.connection_to_server.recv(1024)
+    if message:
+        print(message)
+
 else:
     
     while True:   
-        commande = str(input("Entrer C pour commencer à jouer : \n"))
-        if not commande_start_partie.search(commande):
+        action = str(input("Entrer C pour commencer à jouer : \n"))
+        #if not commande_start_partie.search(commande):
+        if not re.search(commande.c_partie, action):
             continue
         else:
             #Si C, on fait signe au serveur afin d'entammer le prochain stade
-            player.connection_to_server.send(commande.encode())
+            player.connection_to_server.send(action.encode())
             #player.connection_to_server.recv(1024)
             break
     #message = player.connection_to_server.recv(1024)
-    player.receive()
+    message = player.connection_to_server.recv(1024)
+    if message:
+        print(message)
+
 
 
 #Les clients/Players doivent attendre leur tour pour lancer une action
 while True:
-    player_turn = int(player.receive())
-    try:
+    player_turn = player.receive()
         #Le serveur indique a qui est le tour
         #player_turn doit etre un entier entre 1 et 2       
-        if player.player_own_number == player_turn:
+    if str(player.player_own_number) == player_turn:
+        while True:
             action = input("Votre tour \n")
-            
-            #Traitement
-            
-        else:
-            continue
-    except:
-        #print("Erreur")
+            if re.search(commande.re_moove, action) \
+                or re.search(commande.re_action, action):
+                break           
+            else:
+                print("Action invalide")
+                continue
+        player.connection_to_server.send(action.encode())       
+    else:
         continue
+
 
 while True:
     message = input("> ")
