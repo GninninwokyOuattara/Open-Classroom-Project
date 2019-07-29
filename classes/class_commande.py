@@ -11,9 +11,9 @@ class Commande():
     - Traitable par le serveur
     """
     def __init__(self):
-        self.moove = ['N', 'S', 'O', 'E'] #Direction possible
+        self.move = ['N', 'S', 'O', 'E'] #Direction possible
         self.action = ['M', 'P'] #Action possible
-        self.re_moove = r"^[NSOE]{1}([0-9]{1})?$"
+        self.re_move = r"^[NSOE]{1}([0-9]{1})?$"
         self.re_action = r"^[PM]{1}[NSOE]{1}$"
         self.c_partie = r"^[cC]{1}$"
     
@@ -21,7 +21,7 @@ class Commande():
         """
         Compile tout les regex 
         """
-        self.re_moove = re.compile(self.re_moove)
+        self.re_move = re.compile(self.re_move)
         self.re_action = re.compile(self.action)
 
     def command_check(self, commande):
@@ -29,15 +29,18 @@ class Commande():
         - Retourne 2 elements : first_part, second_part
         du fait du format des commandes, second_part peut etre None
         """
-        if re.search(self.action, commande):
+        if re.search(self.move, commande):
+            action_or_move = "move"
             if not len(commande) == 2:
                 first_part = commande[0]
-                second_part = None
+                second_part = 1
             else:
                 first_part = commande[0]
                 second_part = commande[1]
-            return first_part, second_part
-        elif re.search(self.moove, commande):
+            return first_part, second_part, action_or_move 
+
+        elif re.search(self.action, commande):
+            action_or_move = "action"
             first_part = commande[0]
             second_part = commande[0]
-        return first_part, second_part
+        return first_part, second_part, action_or_move

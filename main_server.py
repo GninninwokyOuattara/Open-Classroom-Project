@@ -8,6 +8,7 @@ from classes.class_server import *
 from functions.server_functions import encoded_then_sent
 import json
 import time
+from classes.class_commande import Commande
 
 #1st part -- Showing exinsting map in server terminal
 map_folder = Map("maps")
@@ -56,9 +57,9 @@ game_maze.assign_random_position_to_player(game_maze.position_player1)
 game_maze.assign_random_position_to_player(game_maze.position_player2)
 
 print("Partie commence ")
-
+command = Commande()
 game_maze.show_maze()
-
+game_maze.portals_coor()
 
 
 
@@ -86,42 +87,43 @@ time.sleep(5)
 partie = True
 turn = 1
 
-"""
-while partie:
-    #On envoie le numéro du player qui peut entrer une commande
-    for client in game_server.client_connected:
-        #Si le tour est au p1, on lui indique qu'il peut emmettre une action
-        #On incrémente 'turn' de 1 pour que le tour prochain soit au p2
-        if turn == 1:
-            encoded_then_sent(client, turn, str)
-            #client.send(turn.encode())
-            turn += 1
-        #Si le tour est au p2, on lui indique qu'il peut emmettre une action
-        #On décrémente 'turn' de 1 pour que le tour prochain soit au p1
-        elif turn == 2:
-            encoded_then_sent(client, turn, str)
-            #client.send(turn.encode())
-            turn -= 1
-        #On attend a présent la commande du player à qui c'est tour
-        commande = game_server.connection_to_client.recv(1024)
-"""
 while True:
     if turn ==1:
+        player = game_maze.position_player1
         #Tour au premier joueur donc
         encoded_then_sent(game_server.client_connected[0], turn, str)
         turn = 2
         commande = game_server.client_connected[0].recv(1024)
-        game_server.client_connected[0].send(b"Commande recu")
+        if commande:
+            commande = commande.decode()
+            first_part, second_part, action_or_move = command.command_check(commande)
+            if action_or_move == "action":
+                game_maze.action(first_part, second_part, player)
+            elif action_or_move == "moove":
+                game_maze.moove(first_part, second_part, player)
+
+
+
+        #game_server.client_connected[0].send(b"Commande recu")
         #Methode qui va traiter la commande
     elif turn == 2:
+        player = game_maze.position_player2
         #Tour au second joueur donc
         encoded_then_sent(game_server.client_connected[1], turn, str)
-        commande = game_server.client_connected[1].recv(1024)
         turn = 1
-        game_server.client_connected[1].send(b"Commande recu")
+        commande = game_server.client_connected[1].recv(1024)
+        #game_server.client_connected[1].send(b"Commande recu")
+        if commande:
+            commande = commande.decode()
+            first_part, second_part, action_or_move = command.command_check(commande)
+            if action_or_move == "action":
+                game_maze.action(first_part, second_part, player)
+            elif action_or_move == "moove":
+                game_maze.moove(first_part, second_part, player)
+    
+    #Une fois tout les traitements executer on envoie les dictionnaires aux joueurs.
+    game_maze.send_dict_re(game_server)
 
-        #Method qui va traiter la commande
-    #On attend la reponse (commande)
 
         
         

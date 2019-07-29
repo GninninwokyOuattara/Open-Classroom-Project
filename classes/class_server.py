@@ -148,6 +148,7 @@ class Maze():
         #self.player_robot_list = ['1', '2']
         self.position_player1 = ['1',()]
         self.position_player2 = ['2', ()]
+        self.portal_list = []
 
  
     def update_position(self, player):
@@ -352,3 +353,213 @@ class Maze():
         encoded_maze = json.dumps(fake_maze) #Convert the dict to str with json
         encoded_maze = encoded_maze.encode() #Encode the str to bytes  
         game_server.client_connected[1].send(encoded_maze) 
+
+    def portals_coor(self):
+        """Utile pour trouver et stocket l'ensemble des coordonées
+        des portails dans le labyrinthe"""
+        #portal_list = []
+        for key, value in self.game_maze.items():
+            strdic = self.game_maze[key]
+            for i in range(len(strdic)):
+                if strdic[i] == self.portal:
+                    tupl = (key, i)
+                    self.portal_list.append(tupl)
+    
+    def action(self, first_part, second_part, player):
+        """Permet l'application des actions dans le labyrinthe
+        """
+        if first_part.upper() == "M":
+            #Mettre un mur a la place d'une porte
+            if second_part.upper() == "N":
+                new_coor = (player[1][0] - 1, player[1][1])
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.wall
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est une porte")
+            
+            elif second_part.upper() == "S":
+                new_coor = (player[1][0] + 1, player[1][1])
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.wall
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est ce n'est pas une porte")
+
+            elif second_part.upper() == "E":
+                new_coor = (player[1][0], player[1][1] - 1)
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.wall
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est pas une porte")
+
+            elif second_part.upper() == "O":
+                new_coor = (player[1][0], player[1][1] + 1)
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.wall
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est pas une porte")
+        
+        elif first_part.upper() == "P":
+            #Creer une porte a la place d'un mur
+
+            if second_part.upper() == "N":
+                new_coor = (player[1][0] - 1, player[1][1])
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.portal
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est pas un mur")
+            
+            elif second_part.upper() == "S":
+                new_coor = (player[1][0] + 1, player[1][1])
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.portal
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est pas un mur")
+
+            elif second_part.upper() == "E":
+                new_coor = (player[1][0], player[1][1] - 1)
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.portal
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est pas un mur")
+
+            elif second_part.upper() == "O":
+                new_coor = (player[1][0], player[1][1] + 1)
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[new_coor[1]] = self.portal
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+                else:
+                    print("Ce n'est pas un mur")
+
+    
+    def move(self, first_part, second_part, player):
+        """Permet l'application des mouvements dans le labyrinthe"""
+
+        for i in range(int(second_part)):
+
+        #First_part = "N" / Vers le nord
+
+            if first_part.upper() == "N":
+                new_coor = (player[1][0] - 1, player[1][1])
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    print("Mur")
+                else:
+                    #On change la position du joueur
+                    val = []
+                    for element in self.game_maze[new_coor[0]]:
+                        val.append(element)
+                    val[new_coor[1]] = player[0]
+                    val = "".join(val)
+                    self.game_maze[new_coor[0]] = val
+                    #L'ancienne position devient vide
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[player[1][1]] = " "
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+        
+        #First_part = "S" / Vers le sud
+      
+            if first_part.upper() == "S":
+                new_coor = (player[1][0] + 1, player[1][1])
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    print("Mur")
+                else:
+                    #On change la position du joueur
+                    val = []
+                    for element in self.game_maze[new_coor[0]]:
+                        val.append(element)
+                    val[new_coor[1]] = player[0]
+                    val = "".join(val)
+                    self.game_maze[new_coor[0]] = val
+                    #L'ancienne position devient vide
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[player[1][1]] = " "
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+
+
+        #First_part = "E" / Vers l'est
+        
+            if first_part.upper() == "E":
+                new_coor = (player[1][0] , player[1][1] - 1)
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    print("Mur")
+                else:
+                    #On change la position du joueur
+                    val = []
+                    for element in self.game_maze[new_coor[0]]:
+                        val.append(element)
+                    val[new_coor[1]] = player[0]
+                    val = "".join(val)
+                    self.game_maze[new_coor[0]] = val
+                    #L'ancienne position devient vide
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[player[1][1]] = " "
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
+
+        #First_part = "O" / Vers l'ouest
+        
+            if first_part.upper() == "O":
+                new_coor = (player[1][0] , player[1][1] + 1)
+                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                    print("Mur")
+                else:
+                    #On change la position du joueur
+                    val = []
+                    for element in self.game_maze[new_coor[0]]:
+                        val.append(element)
+                    val[new_coor[1]] = player[0]
+                    val = "".join(val)
+                    self.game_maze[new_coor[0]] = val
+                    #L'ancienne position devient vide
+                    val = []
+                    for element in self.game_maze[player[1][0]]:
+                        val.append(element)
+                    val[player[1][1]] = " "
+                    val = "".join(val)
+                    self.game_maze[player[1][0]] = val
