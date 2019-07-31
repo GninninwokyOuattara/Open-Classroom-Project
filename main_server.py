@@ -123,8 +123,9 @@ while True:
                 game_maze.move(first_part, second_part, player)
     
     #Une fois tout les traitements executer on envoie les dictionnaires aux joueurs.
+    
     game_maze.send_dict_re(game_server)
-
+    game_maze.show_maze()
 
         
         

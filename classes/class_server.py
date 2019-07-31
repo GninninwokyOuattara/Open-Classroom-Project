@@ -369,6 +369,22 @@ class Maze():
                 if strdic[i] == self.portal:
                     tupl = (key, i)
                     self.portal_list.append(tupl)
+
+    def re_portal(self):
+        """
+        Permet grace au coordonnées des portails dans self.portal_list de les 
+        replacer, sauf si un joueur est sur la place du portail
+        """
+        for element in self.portal_list:
+            tupl_coor = element
+            list_dictionnary = []
+            for element in self.game_maze(tupl_coor[0]):
+                list_dictionnary.append(element)
+            for element in list_dictionnary:
+                if list_dictionnary[tupl_coor[1]] != self.position_player1[0]\
+                    and list_dictionnary[tupl_coor[1]] != self.position_player2[0]:
+                    list_dictionnary[tupl_coor[1]] = self.portal
+                self.game_maze[tupl_coor[0]] = "".join(list_dictionnary)
     
     def action(self, first_part, second_part, player):
         """Permet l'application des actions dans le labyrinthe
@@ -379,11 +395,11 @@ class Maze():
                 new_coor = (player[1][0] - 1, player[1][1])
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.wall
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est une porte")
             
@@ -391,11 +407,11 @@ class Maze():
                 new_coor = (player[1][0] + 1, player[1][1])
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.wall
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est ce n'est pas une porte")
 
@@ -403,11 +419,11 @@ class Maze():
                 new_coor = (player[1][0], player[1][1] - 1)
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.wall
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est pas une porte")
 
@@ -415,11 +431,11 @@ class Maze():
                 new_coor = (player[1][0], player[1][1] + 1)
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.wall
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est pas une porte")
         
@@ -430,11 +446,11 @@ class Maze():
                 new_coor = (player[1][0] - 1, player[1][1])
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.portal
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est pas un mur")
             
@@ -442,11 +458,11 @@ class Maze():
                 new_coor = (player[1][0] + 1, player[1][1])
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.portal
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est pas un mur")
 
@@ -454,11 +470,11 @@ class Maze():
                 new_coor = (player[1][0], player[1][1] - 1)
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.portal
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est pas un mur")
 
@@ -466,15 +482,17 @@ class Maze():
                 new_coor = (player[1][0], player[1][1] + 1)
                 if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
-                    for element in self.game_maze[player[1][0]]:
+                    for element in self.game_maze[new_coor[0]]:
                         val.append(element)
                     val[new_coor[1]] = self.portal
                     val = "".join(val)
-                    self.game_maze[player[1][0]] = val
+                    self.game_maze[new_coor[0]] = val
                 else:
                     print("Ce n'est pas un mur")
+        
+        #self.portals_coor() #On re-enregistre tout les portails (Ancien & Nouveau)
+        #self.re_portal()
 
-    
     def move(self, first_part, second_part, player):
         """Permet l'application des mouvements dans le labyrinthe"""
 
@@ -568,3 +586,12 @@ class Maze():
                     val[player[1][1]] = " "
                     val = "".join(val)
                     self.game_maze[player[1][0]] = val
+        
+        #self.portals_coor() #On re-enregistre tout les portails (Ancien & Nouveau)
+        #self.re_portal()
+
+        def after_action():
+            pass
+
+        def after_move():
+            pass
