@@ -85,22 +85,33 @@ else:
 
 
 #Les clients/Players doivent attendre leur tour pour lancer une action
+receive_dic = False
 while True:
+    if receive_dic == True:
+        player.receive_encoded_maze()
+
     player_turn = player.receive()
         #Le serveur indique a qui est le tour
-        #player_turn doit etre un entier entre 1 et 2       
-    if str(player.player_own_number) == player_turn:
-        while True:
-            action = input("Votre tour \n")
-            if re.search(commande.re_moove, action) \
-                or re.search(commande.re_action, action):
-                break           
-            else:
-                print("Action invalide")
-                continue
-        player.connection_to_server.send(action.encode())       
-    else:
-        continue
+        #player_turn doit etre un entier entre 1 et 
+    try:
+        if str(player.player_own_number) == player_turn:
+            while True:
+                action = input("Votre tour \n")
+                if re.search(commande.re_move, action) \
+                    or re.search(commande.re_action, action):
+                    
+                    break           
+                else:
+                    print("Action invalide")
+                    continue
+            receive_dic = True
+            player.connection_to_server.send(action.encode())       
+        else:
+            receive_dic = True
+            continue
+    except:
+        print("Something gone wrong")
+        player.connection_to_server.close()
 
 
 while True:

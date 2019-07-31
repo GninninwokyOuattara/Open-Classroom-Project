@@ -63,10 +63,16 @@ class Client():
         return message
 
     def receive_encoded_maze(self):
+        
         encoded_maze = self.connection_to_server.recv(4096) #Receive the bytes type dictionnary
         encoded_maze = encoded_maze.decode() #decode it, bytes to str
         decoded_maze = json.loads(encoded_maze) #reconvert it from str to dict
         #print the dictionnary
-        for value in decoded_maze.values(): 
-            print(value) 
-
+        if type(decoded_maze) == dict:
+            for value in decoded_maze.values(): 
+                print(value)
+        del encoded_maze
+        """        
+        elif type(decoded_maze) == str:
+            return decoded_maze
+        """

@@ -29,18 +29,18 @@ class Commande():
         - Retourne 2 elements : first_part, second_part
         du fait du format des commandes, second_part peut etre None
         """
-        if re.search(self.move, commande):
+        if re.search(self.re_move, commande):
             action_or_move = "move"
             if not len(commande) == 2:
                 first_part = commande[0]
-                second_part = 1
+                second_part = "1"
             else:
                 first_part = commande[0]
                 second_part = commande[1]
             return first_part, second_part, action_or_move 
 
-        elif re.search(self.action, commande):
+        elif re.search(self.re_action, commande):
             action_or_move = "action"
             first_part = commande[0]
             second_part = commande[0]
-        return first_part, second_part, action_or_move
+            return first_part, second_part, action_or_move

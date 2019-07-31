@@ -92,6 +92,7 @@ while True:
         player = game_maze.position_player1
         #Tour au premier joueur donc
         encoded_then_sent(game_server.client_connected[0], turn, str)
+        #encoded_then_sent(game_server.client_connected[1], turn, str)
         turn = 2
         commande = game_server.client_connected[0].recv(1024)
         if commande:
@@ -99,14 +100,14 @@ while True:
             first_part, second_part, action_or_move = command.command_check(commande)
             if action_or_move == "action":
                 game_maze.action(first_part, second_part, player)
-            elif action_or_move == "moove":
-                game_maze.moove(first_part, second_part, player)
+            elif action_or_move == "move":
+                game_maze.move(first_part, second_part, player)
 
 
 
         #game_server.client_connected[0].send(b"Commande recu")
         #Methode qui va traiter la commande
-    elif turn == 2:
+    if turn == 2:
         player = game_maze.position_player2
         #Tour au second joueur donc
         encoded_then_sent(game_server.client_connected[1], turn, str)
@@ -118,8 +119,8 @@ while True:
             first_part, second_part, action_or_move = command.command_check(commande)
             if action_or_move == "action":
                 game_maze.action(first_part, second_part, player)
-            elif action_or_move == "moove":
-                game_maze.moove(first_part, second_part, player)
+            elif action_or_move == "move":
+                game_maze.move(first_part, second_part, player)
     
     #Une fois tout les traitements executer on envoie les dictionnaires aux joueurs.
     game_maze.send_dict_re(game_server)

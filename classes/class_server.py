@@ -372,7 +372,7 @@ class Maze():
             #Mettre un mur a la place d'une porte
             if second_part.upper() == "N":
                 new_coor = (player[1][0] - 1, player[1][1])
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -384,7 +384,7 @@ class Maze():
             
             elif second_part.upper() == "S":
                 new_coor = (player[1][0] + 1, player[1][1])
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -396,7 +396,7 @@ class Maze():
 
             elif second_part.upper() == "E":
                 new_coor = (player[1][0], player[1][1] - 1)
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -408,7 +408,7 @@ class Maze():
 
             elif second_part.upper() == "O":
                 new_coor = (player[1][0], player[1][1] + 1)
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.portal:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.portal:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -423,7 +423,7 @@ class Maze():
 
             if second_part.upper() == "N":
                 new_coor = (player[1][0] - 1, player[1][1])
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -435,7 +435,7 @@ class Maze():
             
             elif second_part.upper() == "S":
                 new_coor = (player[1][0] + 1, player[1][1])
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -447,7 +447,7 @@ class Maze():
 
             elif second_part.upper() == "E":
                 new_coor = (player[1][0], player[1][1] - 1)
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -459,7 +459,7 @@ class Maze():
 
             elif second_part.upper() == "O":
                 new_coor = (player[1][0], player[1][1] + 1)
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     val = []
                     for element in self.game_maze[player[1][0]]:
                         val.append(element)
@@ -476,10 +476,10 @@ class Maze():
         for i in range(int(second_part)):
 
         #First_part = "N" / Vers le nord
-
+            self.update_position(player)
             if first_part.upper() == "N":
                 new_coor = (player[1][0] - 1, player[1][1])
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     print("Mur")
                 else:
                     #On change la position du joueur
@@ -501,7 +501,7 @@ class Maze():
       
             if first_part.upper() == "S":
                 new_coor = (player[1][0] + 1, player[1][1])
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     print("Mur")
                 else:
                     #On change la position du joueur
@@ -524,7 +524,7 @@ class Maze():
         
             if first_part.upper() == "E":
                 new_coor = (player[1][0] , player[1][1] - 1)
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     print("Mur")
                 else:
                     #On change la position du joueur
@@ -546,7 +546,7 @@ class Maze():
         
             if first_part.upper() == "O":
                 new_coor = (player[1][0] , player[1][1] + 1)
-                if self.game_maze[new_coor[0][new_coor[1]]] == self.wall:
+                if self.game_maze[new_coor[0]][new_coor[1]] == self.wall:
                     print("Mur")
                 else:
                     #On change la position du joueur
