@@ -34,10 +34,11 @@ class Server(threading.Thread):
         self.main_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.main_connection.bind((self.host, self.server_port))
+            self.main_connection.listen(5)
         except OSError:
-            print(" Port : {} indisponible".format(self.server_port))
-            #sys.exit()
-        self.main_connection.listen(5)
+            print("Port : {} indisponible".format(self.server_port))
+            return sys.exit()
+        
 
     #Accept client request for connection
     def accept_connection(self):
@@ -378,7 +379,7 @@ class Maze():
         for element in self.portal_list:
             tupl_coor = element
             list_dictionnary = []
-            for element in self.game_maze(tupl_coor[0]):
+            for element in self.game_maze[tupl_coor[0]]:
                 list_dictionnary.append(element)
             for element in list_dictionnary:
                 if list_dictionnary[tupl_coor[1]] != self.position_player1[0]\
@@ -490,8 +491,9 @@ class Maze():
                 else:
                     print("Ce n'est pas un mur")
         
+        self.after_action(first_part, new_coor)
         #self.portals_coor() #On re-enregistre tout les portails (Ancien & Nouveau)
-        #self.re_portal()
+        return self.re_portal()
 
     def move(self, first_part, second_part, player):
         """Permet l'application des mouvements dans le labyrinthe"""
@@ -588,10 +590,24 @@ class Maze():
                     self.game_maze[player[1][0]] = val
         
         #self.portals_coor() #On re-enregistre tout les portails (Ancien & Nouveau)
-        #self.re_portal()
+        return self.re_portal()
 
-        def after_action():
-            pass
+    def after_action(self, first_part, coor):
+        """
+        Executer apres une action.
+        Si Action Mur -> Portail : On ajoute les coordonnées du portail
+        Si Action Portail -> Mur : On supprime les coordonnées du portail
+        - Dans self.portal_list.
+        """
+        if first_part.upper() == "P":
+            #Mur -> Portail.
+            self.portal_list.append(coor)
+            self.portal_list.sort()
+        elif first_part.upper() == "M":
+            #Portal -> Mur
+            for element in self.portal_list:
+                if element == coor:
+                    self.portal_list.remove(element)
 
-        def after_move():
-            pass
+    def after_move():
+        pass

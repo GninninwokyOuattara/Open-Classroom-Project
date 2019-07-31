@@ -9,6 +9,7 @@ from functions.server_functions import encoded_then_sent
 import json
 import time
 from classes.class_commande import Commande
+import sys
 
 #1st part -- Showing exinsting map in server terminal
 map_folder = Map("maps")
