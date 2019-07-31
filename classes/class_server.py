@@ -8,6 +8,7 @@ import threading
 import json
 import random
 import copy
+import sys
 
                 #SERVER
 
@@ -31,7 +32,11 @@ class Server(threading.Thread):
     def launch_server(self):
         """Method use to start a server"""
         self.main_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.main_connection.bind((self.host, self.server_port))
+        try:
+            self.main_connection.bind((self.host, self.server_port))
+        except OSError:
+            print(" Port : {} indisponible".format(self.server_port))
+            #sys.exit()
         self.main_connection.listen(5)
 
     #Accept client request for connection

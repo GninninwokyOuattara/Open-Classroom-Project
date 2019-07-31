@@ -42,5 +42,5 @@ class Commande():
         elif re.search(self.re_action, commande):
             action_or_move = "action"
             first_part = commande[0]
-            second_part = commande[0]
+            second_part = commande[1]
             return first_part, second_part, action_or_move
