@@ -103,7 +103,8 @@ while True:
                 game_maze.action(first_part, second_part, player)
             elif action_or_move == "move":
                 game_maze.move(first_part, second_part, player)
-
+        game_maze.send_dict_to_p1(game_server)
+        game_maze.show_maze()
 
 
         #game_server.client_connected[0].send(b"Commande recu")
@@ -122,11 +123,12 @@ while True:
                 game_maze.action(first_part, second_part, player)
             elif action_or_move == "move":
                 game_maze.move(first_part, second_part, player)
-    
+        game_maze.send_dict_to_p2(game_server)
+        game_maze.show_maze()
     #Une fois tout les traitements executer on envoie les dictionnaires aux joueurs.
     
-    game_maze.send_dict_re(game_server)
-    game_maze.show_maze()
+    #game_maze.send_dict_re(game_server)
+    #game_maze.show_maze()
 
         
         

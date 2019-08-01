@@ -270,6 +270,68 @@ class Maze():
                 liste = "".join(liste)
                 self.game_maze[coordinate[0]] = liste
                 break
+    
+    def send_dict_to_p1(self, game_server):
+        self.update_position(self.position_player1)
+        self.update_position(self.position_player2)
+
+        #Copie du dictionnaire
+        fake_maze = copy.deepcopy(self.game_maze)
+
+        #Premier player self.position_player1
+        for key, value in fake_maze.items():
+            #Si on trouve la position du premier joueur
+            if self.position_player1[0] in fake_maze[key]:
+                val = []
+                for value in fake_maze[key]:
+                    val.append(value)
+                val[self.position_player1[1][1]] = 'X'
+                val = "".join(val)
+                fake_maze[key] = val
+
+            #Si on trouve la position du second joueur
+            if self.position_player2[0] in fake_maze[key]:
+                val = []
+                
+                for value in fake_maze[key]:
+                    val.append(value)
+
+                val[self.position_player2[1][1]] = 'x'
+                val = "".join(val)
+                fake_maze[key] = val
+
+        encoded_maze = json.dumps(fake_maze) #Convert the dict to str with json
+        encoded_maze = encoded_maze.encode() #Encode the str to bytes  
+        game_server.client_connected[0].send(encoded_maze)         
+
+    def send_dict_to_p2(self, game_server):
+        #Second player#
+        fake_maze = copy.deepcopy(self.game_maze)
+
+        #Deuxieme player self.position_player2
+        for key, value in fake_maze.items():
+            #Si on trouve la position du premier joueur
+            if self.position_player2[0] in fake_maze[key]:
+                val = []
+                for value in fake_maze[key]:
+                    val.append(value)
+
+                val[self.position_player2[1][1]] = 'X'
+                val = "".join(val)
+                fake_maze[key] = val
+            #Si on trouve la position du second joueur
+            if self.position_player1[0] in fake_maze[key]:
+                val = []
+                for value in fake_maze[key]:
+                    val.append(value)
+
+                val[self.position_player1[1][1]] = 'x'
+                val = "".join(val)
+                fake_maze[key] = val
+        encoded_maze = json.dumps(fake_maze) #Convert the dict to str with json
+        encoded_maze = encoded_maze.encode() #Encode the str to bytes  
+        game_server.client_connected[1].send(encoded_maze) 
+
 
     def send_dict_re(self, game_server):
         """
